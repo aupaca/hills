@@ -12,9 +12,8 @@ public:
 	~Game();
 	
 	bool needRedraw() const;
-	
 	void draw();
-	void onTouchEvent(const anut::MotionEvent& motion);
+	void handleTouch(const anut::MotionEvent& motion);
 	
 private:
 	glm::vec2 _sensivity;

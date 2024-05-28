@@ -4,8 +4,7 @@
 #include "Plane.h"
 
 Game::Game()
-	: _renderer("./src/shader/base.vert", "./src/shader/base.frag")
-	, _cam({0.f, 0.f, 0.f}, 240.f)
+	: _cam({0.f, 0.f, 0.f}, 240.f)
 {
 	_sensivity.x = -glm::radians(90.f) / 500.f;
 	_sensivity.y = -glm::radians(90.f) / 500.f;
@@ -42,20 +41,7 @@ Game::Game()
 			v.color = glm::vec4(1.f, 1.f, 1.f, 1.f);
 		}
 	}
-	
 	_renderer.loadData(hills.vertexList, hills.wireframeIndexList);
-	
-	glm::mat4 proj = glm::perspective(glm::radians(45.f), anut::Engine::window->aspectRatio(), 0.1f, 1000.f);
-	_renderer.setUniform("proj", proj);
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	glEnable(GL_DEPTH_TEST);
-	
-	float lineWidthRange[2];
-	glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, lineWidthRange);
-	if (lineWidthRange[1] >= 3.f)
-	{
-		glLineWidth(3.f);
-	}
 }
 
 Game::~Game()
@@ -66,12 +52,11 @@ Game::~Game()
 void Game::draw()
 {
 	_updateFrame = false;
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	_renderer.setUniform("view", _cam.viewMatrix());
 	_renderer.draw();
 }
 
-void Game::onTouchEvent(const anut::MotionEvent& motion)
+void Game::handleTouch(const anut::MotionEvent& motion)
 {
 	glm::vec2 touchPos = glm::vec2(motion.x, motion.y);
 	switch (motion.action)
